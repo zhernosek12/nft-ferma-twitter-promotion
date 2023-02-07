@@ -9,6 +9,8 @@ installing with pip
 running the script
 
 ```
+from zhFermaTwitter import ZhFermaTwitter
+
 secret_key = "<your-secret-key>"
 chrome_driver = "<your-directory-path>"
 
