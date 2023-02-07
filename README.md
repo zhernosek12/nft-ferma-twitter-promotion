@@ -19,3 +19,5 @@ fermaTwitter.start()
 ```
 
 __chrome_driver__ - chromedriver-windows-x64.exe download from selenium project, and specify the path
+
+https://anty-assets.s3.eu-central-1.amazonaws.com/chromedriver108.zip
