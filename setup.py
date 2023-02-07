@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='nft-ferma-twitter-promotion',
-    version='0.0.1',
-    packages=['Models'],
+    name='zhnftfermatwitter',
+    version='0.0.2',
+    packages=[],
     url='http://ferma.zhernosek.xyz/',
     license='',
     author='Zhernosek Andrei',
