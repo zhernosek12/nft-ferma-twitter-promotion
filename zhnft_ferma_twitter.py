@@ -42,7 +42,7 @@ class Callbacks:
     def result_my_followers(self, user_id, profile, followers, following):
         request(self.secret_key, "result_my_followers", {'user_id': str(user_id), 'login': str(profile), 'followers': str(followers), 'following': str(following)})
 
-class ZhFermaTwitter:
+class ZhNFTFermaTwitter:
     def __init__(self, secret_key, chrome_driver):
         self.secret_key = secret_key
         self.chrome_driver = chrome_driver
@@ -55,6 +55,8 @@ class ZhFermaTwitter:
         self.callbacks.set_secret_key(self.secret_key)
 
     def start(self):
+
+        print("Start twitter promotion...")
 
         while True:
 
