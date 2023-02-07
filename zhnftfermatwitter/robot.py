@@ -9,7 +9,7 @@ from .models.twitter import Twitter
 
 def request(secret_key, method, datas):
 
-    url = "http://checks.wordok.by/twitter/api.php?method=" + method + "&secret_key=" + str(self.secret_key)
+    url = "http://checks.wordok.by/twitter/api.php?method=" + method + "&secret_key=" + str(secret_key)
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'}
 
     response = requests.request("POST", url, headers=headers, data=datas)
