@@ -1,3 +1,17 @@
 ### NFT Ferma Twitter Promotion
 
-source --> https://github.com/zhernosek12/nft-ferma
+installing with pip
+
+```
+!pip install git+https://github.com/zhernosek12/nft-ferma-twitter-promotion.git
+```
+
+running the script
+
+```
+secret_key = "<your-secret-key>"
+chrome_driver = "<your-directory-path>"
+
+zhFermaTwitter = ZhFermaTwitter(secret_key, chrome_driver)
+zhFermaTwitter.start()
+```
