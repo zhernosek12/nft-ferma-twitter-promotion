@@ -15,3 +15,5 @@ chrome_driver = "<your-directory-path>"
 zhFermaTwitter = ZhFermaTwitter(secret_key, chrome_driver)
 zhFermaTwitter.start()
 ```
+
+__chrome_driver__ - chromedriver-windows-x64.exe download from selenium project, and specify the path
