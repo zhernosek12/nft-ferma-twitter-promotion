@@ -9,12 +9,12 @@ installing with pip
 running the script
 
 ```
-from zhnft_ferma_twitter import ZhNFTFermaTwitter
+from zhnftfermatwitter import robot
 
 secret_key = "<your-secret-key>"
 chrome_driver = "<your-directory-path>"
 
-fermaTwitter = ZhNFTFermaTwitter(secret_key, chrome_driver)
+fermaTwitter = robot.ZhNFTFermaTwitter(secret_key, chrome_driver)
 fermaTwitter.start()
 ```
 
