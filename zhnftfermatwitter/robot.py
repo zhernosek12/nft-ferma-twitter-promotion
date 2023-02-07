@@ -1,8 +1,8 @@
 import requests
 import time
 
-from models.dolphin import Dolphin
-from models.twitter import Twitter
+from zhnftfermatwitter.models.dolphin import Dolphin
+from zhnftfermatwitter.models.twitter import Twitter
 
 # продвижение по аккаунту твиттера
 # готовый скрипт, запускай да и все!
