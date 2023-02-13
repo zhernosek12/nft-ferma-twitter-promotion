@@ -13,6 +13,17 @@ class Twitter:
 
         self.callbacks = callbacks
 
+    def check_auth(self):
+
+        if "twitter.com" not in self.driver.current_url:
+            self.driver.get("https://twitter.com/")
+            time.sleep(2)
+
+        try:
+            self.driver.find_element(By.XPATH, "//a[@href='/compose/tweet']").text
+        except:
+            input("auth twitter, and press enter to continue...")
+
     def follow(self, url):
         print("go follow --> ")
         try:
@@ -32,7 +43,7 @@ class Twitter:
 
             try:
                 # найти все span элементы, и проверить текст
-                spans = self.driver.find_elements_by_tag_name("span")
+                spans = self.driver.find_elements(By.TAG_NAME, "span")
                 if spans:
                     for s in spans:
                         if s and s.text:
@@ -133,7 +144,7 @@ class Twitter:
                 break
             last_height = new_height
 
-            usernames = self.driver.find_elements_by_class_name("css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
+            usernames = self.driver.find_elements(By.CLASS_NAME, "css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
             for a in usernames:
                 try:
                     text = a.text
@@ -169,7 +180,7 @@ class Twitter:
 
         # parse
         try:
-            followers_datas = self.driver.find_elements_by_css_selector(".css-901oao.css-16my406.r-18jsvk2.r-poiln3.r-1b43r93.r-b88u0q.r-1cwl3u0.r-bcqeeo.r-qvutc0 .css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
+            followers_datas = self.driver.find_elements(By.CSS_SELECTOR, ".css-901oao.css-16my406.r-18jsvk2.r-poiln3.r-1b43r93.r-b88u0q.r-1cwl3u0.r-bcqeeo.r-qvutc0 .css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
 
             following = self.parse_follow_text(followers_datas[0].text)
             followers = self.parse_follow_text(followers_datas[1].text)
@@ -254,7 +265,8 @@ class Twitter:
                 break
             last_height = new_height
 
-            usernames = self.driver.find_elements_by_class_name("css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
+            usernames = self.driver.find_elements(By.CLASS_NAME, "css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
+
             for a in usernames:
                 try:
                     text = a.text
@@ -299,7 +311,7 @@ class Twitter:
 
         # parse
         try:
-            followers_datas = self.driver.find_elements_by_css_selector(".css-901oao.css-16my406.r-18jsvk2.r-poiln3.r-1b43r93.r-b88u0q.r-1cwl3u0.r-bcqeeo.r-qvutc0 .css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
+            followers_datas = self.driver.find_elements(By.CLASS_NAME, ".css-901oao.css-16my406.r-18jsvk2.r-poiln3.r-1b43r93.r-b88u0q.r-1cwl3u0.r-bcqeeo.r-qvutc0 .css-901oao.css-16my406.r-poiln3.r-bcqeeo.r-qvutc0")
 
             following = self.parse_follow_text(followers_datas[0].text)
             followers = self.parse_follow_text(followers_datas[1].text)

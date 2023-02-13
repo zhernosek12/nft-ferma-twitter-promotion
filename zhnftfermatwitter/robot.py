@@ -5,8 +5,8 @@ import wget
 import sys
 import os
 
-from models.custom_browser import CustomBrowser
-from models.twitter import Twitter
+from .models.custom_browser import CustomBrowser
+from .models.twitter import Twitter
 
 # продвижение по аккаунту твиттера
 # готовый скрипт, запускай да и все!
@@ -47,9 +47,10 @@ class Callbacks:
         request(self.secret_key, "result_my_followers", {'user_id': str(user_id), 'login': str(profile), 'followers': str(followers), 'following': str(following)})
 
 class ZhNFTFermaTwitter:
-    def __init__(self, secret_key, chrome_driver):
+    def __init__(self, secret_key, chrome_driver, local_path=""):
         self.secret_key = secret_key
         self.chrome_driver = chrome_driver
+        self.local_path = local_path
         self.headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'}
         self.browser = None
         self.step = 0
@@ -82,16 +83,12 @@ class ZhNFTFermaTwitter:
                 user = j["user"]
                 data = j["data"]
 
-                dir = os.path.dirname(os.path.realpath(__file__))
-
-                # important downloads
-
                 exec_path = self.chrome_driver
                 proxy = user["proxy"]
                 user_agent = user["user_agent"]
-                user_data_dir = dir + r"\Browser"
+                user_data_dir = self.local_path + r"\Browser"
                 user_profile_id = "user" + str(user["id"])
-                #extensions = [dir + r"\Plugins\Canvas-Fingerprint-Defender.crx"]
+                #extensions = [self.local_path + r"\Plugins\Canvas-Fingerprint-Defender.crx"]
                 extensions = []
 
                 # подключаемся к браузеру
@@ -101,10 +98,10 @@ class ZhNFTFermaTwitter:
                         self.browser.connect()
                         time.sleep(3)
                 except Exception as e:
+                    self.browser.stop()
                     print("Error browser init!")
                     print(e)
                     break
-
 
                 # ждем 4 секунд, после того как запустили
                 time.sleep(4)
@@ -116,6 +113,9 @@ class ZhNFTFermaTwitter:
 
                 # подключаем модель твитера
                 twitter = Twitter(self.browser.get_driver(), self.callbacks)
+
+                # проверим, авторизованы ли мы?
+                twitter.check_auth()
 
                 if type == "GET_FOLLOWERS":
                     # читаем фоловеров
@@ -153,34 +153,3 @@ class ZhNFTFermaTwitter:
             self.step = self.step + 1
             if self.step > self.max_steps:
                 break
-
-def download(link, save_to):
-
-    filename = wget.download(link)
-
-    print(filename)
-
-
-dir = os.path.dirname(os.path.realpath(__file__))
-
-#download(
-#    "https://github.com/zhernosek12/nft-ferma-twitter-promotion/blob/2bbe2c04a918a7c04e607f82d99cecb93d5693e8/chromedriver-windows-x64.exe?raw=true",
-#    dir + r"\Exec\chromedriver-windows-x64.exe")
-#download(
-#    "https://github.com/zhernosek12/nft-ferma-twitter-promotion/blob/master/Canvas-Fingerprint-Defender.crx?raw=true",
-#    dir + r"\Plugins\Canvas-Fingerprint-Defender.crx")
-
-def main():
-    #print(sys.argv)
-
-    #secret_key = sys.argv[1]
-
-    secret_key = "10005-50707b-1d5113-0582f1-963db3-9652a6"
-    chrome_driver = "D:\mypapa\FermaDev\ChromeDriver2\chromedriver-windows-x64.exe"
-
-    fermaTwitter = ZhNFTFermaTwitter(secret_key, chrome_driver)
-    fermaTwitter.start()
-
-
-if __name__ == '__main__':
-    main()
