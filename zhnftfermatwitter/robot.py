@@ -59,7 +59,7 @@ class ZhNFTFermaTwitter:
         self.callbacks = Callbacks()
         self.callbacks.set_secret_key(self.secret_key)
 
-    def start(self):
+    def start(self, profile_id=""):
 
         print("Start twitter promotion...")
 
@@ -68,7 +68,7 @@ class ZhNFTFermaTwitter:
             # каждые 1 секунд получаем задачу
             time.sleep(1)
 
-            response = requests.request("GET", "http://checks.wordok.by/twitter/router.php?secret_key=" + str(self.secret_key), headers=self.headers)
+            response = requests.request("GET", "http://checks.wordok.by/twitter/router.php?secret_key=" + str(self.secret_key) + "&profile_id=" + str(profile_id), headers=self.headers)
 
             if response.text == "secret key not found!":
                 print(response.text)
