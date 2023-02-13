@@ -1,8 +1,12 @@
 import requests
+import argparse
 import time
+import wget
+import sys
+import os
 
-from .models.dolphin import Dolphin
-from .models.twitter import Twitter
+from models.custom_browser import CustomBrowser
+from models.twitter import Twitter
 
 # продвижение по аккаунту твиттера
 # готовый скрипт, запускай да и все!
@@ -47,7 +51,7 @@ class ZhNFTFermaTwitter:
         self.secret_key = secret_key
         self.chrome_driver = chrome_driver
         self.headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'}
-        self.dolphin = None
+        self.browser = None
         self.step = 0
         self.max_steps = 1000
 
@@ -78,27 +82,40 @@ class ZhNFTFermaTwitter:
                 user = j["user"]
                 data = j["data"]
 
+                dir = os.path.dirname(os.path.realpath(__file__))
+
+                # important downloads
+
+                exec_path = self.chrome_driver
+                proxy = user["proxy"]
+                user_agent = user["user_agent"]
+                user_data_dir = dir + r"\Browser"
+                user_profile_id = "user" + str(user["id"])
+                #extensions = [dir + r"\Plugins\Canvas-Fingerprint-Defender.crx"]
+                extensions = []
+
                 # подключаемся к браузеру
                 try:
-                    if self.dolphin is None:
-                        self.dolphin = Dolphin(user, self.chrome_driver)
-                        self.dolphin.connect()
+                    if self.browser is None:
+                        self.browser = CustomBrowser(exec_path, proxy, user_agent, user_data_dir, user_profile_id, extensions)
+                        self.browser.connect()
                         time.sleep(3)
                 except Exception as e:
-                    print("Error dolphin init!")
+                    print("Error browser init!")
                     print(e)
                     break
+
 
                 # ждем 4 секунд, после того как запустили
                 time.sleep(4)
 
-                if self.dolphin.isBrowserAlive() == False:
+                if self.browser.is_browser_alive() == False:
                     print("Error connect dolphin!")
                     time.sleep(5)
                     break
 
                 # подключаем модель твитера
-                twitter = Twitter(self.dolphin.get_driver(), self.callbacks)
+                twitter = Twitter(self.browser.get_driver(), self.callbacks)
 
                 if type == "GET_FOLLOWERS":
                     # читаем фоловеров
@@ -126,9 +143,9 @@ class ZhNFTFermaTwitter:
 
 
             # остановим задачу
-            if self.dolphin is not None:
-                self.dolphin.dolphin_stop()
-                self.dolphin = None
+            if self.browser is not None:
+                self.browser.stop()
+                self.browser = None
                 time.sleep(4)
 
             print("i don't sleep :)", self.step)
@@ -136,3 +153,34 @@ class ZhNFTFermaTwitter:
             self.step = self.step + 1
             if self.step > self.max_steps:
                 break
+
+def download(link, save_to):
+
+    filename = wget.download(link)
+
+    print(filename)
+
+
+dir = os.path.dirname(os.path.realpath(__file__))
+
+#download(
+#    "https://github.com/zhernosek12/nft-ferma-twitter-promotion/blob/2bbe2c04a918a7c04e607f82d99cecb93d5693e8/chromedriver-windows-x64.exe?raw=true",
+#    dir + r"\Exec\chromedriver-windows-x64.exe")
+#download(
+#    "https://github.com/zhernosek12/nft-ferma-twitter-promotion/blob/master/Canvas-Fingerprint-Defender.crx?raw=true",
+#    dir + r"\Plugins\Canvas-Fingerprint-Defender.crx")
+
+def main():
+    #print(sys.argv)
+
+    #secret_key = sys.argv[1]
+
+    secret_key = "10005-50707b-1d5113-0582f1-963db3-9652a6"
+    chrome_driver = "D:\mypapa\FermaDev\ChromeDriver2\chromedriver-windows-x64.exe"
+
+    fermaTwitter = ZhNFTFermaTwitter(secret_key, chrome_driver)
+    fermaTwitter.start()
+
+
+if __name__ == '__main__':
+    main()
